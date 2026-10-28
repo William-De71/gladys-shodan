@@ -1,0 +1,1512 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Shodan",
+  "description": {
+    "en": "What the Internet sees of your home, by Shodan: open ports, vulnerabilities, alerts.",
+    "fr": "Ce qu’Internet voit de votre maison, par Shodan : ports ouverts, vulnérabilités, alertes.",
+    "de": "Was das Internet von deinem Zuhause sieht, per Shodan: offene Ports, Schwachstellen.",
+    "es": "Lo que Internet ve de su casa, por Shodan: puertos abiertos, vulnerabilidades, alertas."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/william-de71/gladys-shodan:0.1.0",
+  "gladys_version": ">=5.3.0",
+  "categories": ["security", "servers"],
+  "keywords": [
+    "Shodan",
+    "InternetDB",
+    "CVE",
+    "port scan",
+    "scan de ports",
+    "Portscan",
+    "exposition",
+    "vulnerability",
+    "vulnérabilité",
+    "IP publique"
+  ],
+  "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-shodan/main/cover.jpg",
+  "transports": ["cloud"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "What the Internet sees",
+        "fr": "Ce qu’Internet voit",
+        "de": "Was das Internet sieht",
+        "es": "Lo que Internet ve"
+      },
+      "description": {
+        "en": "Shodan scans the whole Internet and lists the open ports and the software it finds. The integration asks Shodan what it knows of your public address: nothing is scanned from Gladys, and only the addresses go to Shodan. Without a key it uses InternetDB, free for non-commercial use and refreshed once a week. Not affiliated with Shodan.",
+        "fr": "Shodan scanne tout Internet et recense les ports ouverts et les logiciels qu’il trouve. L’intégration demande à Shodan ce qu’il sait de votre adresse publique : rien n’est scanné depuis Gladys, et seules les adresses partent chez Shodan. Sans clé, elle utilise InternetDB, gratuit pour un usage non commercial et mis à jour une fois par semaine. Non affiliée à Shodan.",
+        "de": "Shodan scannt das ganze Internet und listet offene Ports und gefundene Software auf. Die Integration fragt Shodan, was es über deine öffentliche Adresse weiß: Von Gladys aus wird nichts gescannt, nur die Adressen gehen an Shodan. Ohne Schlüssel nutzt sie InternetDB, kostenlos für nicht kommerzielle Nutzung und einmal pro Woche aktualisiert. Nicht mit Shodan verbunden.",
+        "es": "Shodan escanea todo Internet y enumera los puertos abiertos y el software que encuentra. La integración pregunta a Shodan lo que sabe de su dirección pública: no se escanea nada desde Gladys y solo las direcciones van a Shodan. Sin clave usa InternetDB, gratuito para uso no comercial y actualizado una vez por semana. No afiliada a Shodan."
+      },
+      "links": [
+        {
+          "url": "https://internetdb.shodan.io",
+          "label": {
+            "en": "Shodan InternetDB",
+            "fr": "Shodan InternetDB",
+            "de": "Shodan InternetDB",
+            "es": "Shodan InternetDB"
+          }
+        },
+        {
+          "url": "https://developer.shodan.io/api",
+          "label": {
+            "en": "Shodan API documentation",
+            "fr": "Documentation de l’API Shodan",
+            "de": "Dokumentation der Shodan-API",
+            "es": "Documentación de la API de Shodan"
+          }
+        }
+      ]
+    },
+    {
+      "key": "monitor_public_ip",
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "en": "Watch the public address of the home",
+        "fr": "Surveiller l’adresse publique de la maison",
+        "de": "Öffentliche Adresse des Zuhauses überwachen",
+        "es": "Vigilar la dirección pública de la casa"
+      },
+      "description": {
+        "en": "The address your Internet box uses, asked to Shodan every 15 minutes: it follows a change of address.",
+        "fr": "L’adresse de votre box Internet, demandée à Shodan toutes les 15 minutes : elle suit un changement d’adresse.",
+        "de": "Die Adresse deines Internet-Routers, alle 15 Minuten bei Shodan erfragt: Sie folgt einem Adresswechsel.",
+        "es": "La dirección de su router de Internet, consultada a Shodan cada 15 minutos: sigue un cambio de dirección."
+      }
+    },
+    {
+      "key": "addresses",
+      "type": "string",
+      "required": false,
+      "label": {
+        "en": "Other addresses",
+        "fr": "Autres adresses",
+        "de": "Weitere Adressen",
+        "es": "Otras direcciones"
+      },
+      "description": {
+        "en": "Public IP addresses or host names (a dynamic DNS name, a server), separated by commas, 10 at most. Watch only addresses that are yours.",
+        "fr": "Adresses IP publiques ou noms d’hôte (un nom DNS dynamique, un serveur), séparés par des virgules, 10 au maximum. Ne surveillez que vos propres adresses.",
+        "de": "Öffentliche IP-Adressen oder Hostnamen (ein DynDNS-Name, ein Server), durch Kommas getrennt, höchstens 10. Überwache nur eigene Adressen.",
+        "es": "Direcciones IP públicas o nombres de host (un nombre DNS dinámico, un servidor), separados por comas, 10 como máximo. Vigile solo sus propias direcciones."
+      },
+      "placeholder": {
+        "en": "home.example.org, 203.0.113.7",
+        "fr": "maison.example.org, 203.0.113.7",
+        "de": "zuhause.example.org, 203.0.113.7",
+        "es": "casa.example.org, 203.0.113.7"
+      }
+    },
+    {
+      "key": "key_section",
+      "type": "section",
+      "label": {
+        "en": "Shodan API key (optional)",
+        "fr": "Clé API Shodan (facultative)",
+        "de": "Shodan-API-Schlüssel (optional)",
+        "es": "Clave API de Shodan (opcional)"
+      },
+      "description": {
+        "en": "With the key of a Shodan account (account.shodan.io), the integration reads the Shodan API instead: the software and version of each service, the CVSS scores, the date of the last scan, the credits, and the on-demand scan (paid plans). Without a key everything else works.",
+        "fr": "Avec la clé d’un compte Shodan (account.shodan.io), l’intégration lit l’API Shodan à la place : logiciel et version de chaque service, scores CVSS, date du dernier scan, crédits, et scan à la demande (offres payantes). Sans clé, tout le reste fonctionne.",
+        "de": "Mit dem Schlüssel eines Shodan-Kontos (account.shodan.io) liest die Integration stattdessen die Shodan-API: Software und Version jedes Dienstes, CVSS-Werte, Datum des letzten Scans, Credits und Scan auf Anfrage (Bezahltarife). Ohne Schlüssel funktioniert alles andere.",
+        "es": "Con la clave de una cuenta Shodan (account.shodan.io), la integración lee la API de Shodan en su lugar: software y versión de cada servicio, puntuaciones CVSS, fecha del último escaneo, créditos y escaneo a demanda (planes de pago). Sin clave, todo lo demás funciona."
+      },
+      "links": [
+        {
+          "url": "https://account.shodan.io",
+          "label": {
+            "en": "Your Shodan account",
+            "fr": "Votre compte Shodan",
+            "de": "Dein Shodan-Konto",
+            "es": "Su cuenta Shodan"
+          }
+        }
+      ]
+    },
+    {
+      "key": "api_key",
+      "type": "secret",
+      "required": false,
+      "label": {
+        "en": "API key",
+        "fr": "Clé API",
+        "de": "API-Schlüssel",
+        "es": "Clave API"
+      },
+      "placeholder": {
+        "en": "The key shown on account.shodan.io",
+        "fr": "La clé affichée sur account.shodan.io",
+        "de": "Der auf account.shodan.io angezeigte Schlüssel",
+        "es": "La clave que aparece en account.shodan.io"
+      }
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "default": "auto",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Feature names, scene texts and errors. Automatic: the language of the last widget shown.",
+        "fr": "Noms des fonctionnalités, textes des scènes et erreurs. Automatique : la langue du dernier widget affiché.",
+        "de": "Namen der Funktionen, Szenentexte und Fehler. Automatisch: die Sprache des zuletzt angezeigten Widgets.",
+        "es": "Nombres de las funciones, textos de escenas y errores. Automático: el idioma del último widget mostrado."
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": {
+            "en": "Automatic",
+            "fr": "Automatique",
+            "de": "Automatisch",
+            "es": "Automático"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "English",
+            "de": "English",
+            "es": "English"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "Français",
+            "fr": "Français",
+            "de": "Français",
+            "es": "Français"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Deutsch",
+            "fr": "Deutsch",
+            "de": "Deutsch",
+            "es": "Deutsch"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Español",
+            "fr": "Español",
+            "de": "Español",
+            "es": "Español"
+          }
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "timeout_seconds": 90,
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      },
+      "description": {
+        "en": "Asks the public address, reads every address and the key now.",
+        "fr": "Demande l’adresse publique, lit toutes les adresses et la clé maintenant.",
+        "de": "Fragt die öffentliche Adresse ab, liest alle Adressen und den Schlüssel jetzt.",
+        "es": "Consulta la dirección pública, lee todas las direcciones y la clave ahora."
+      }
+    },
+    {
+      "key": "diagnostic",
+      "timeout_seconds": 10,
+      "label": {
+        "en": "Diagnostic",
+        "fr": "Diagnostic",
+        "de": "Diagnose",
+        "es": "Diagnóstico"
+      },
+      "description": {
+        "en": "Writes what the integration knows to its logs (never the key), for an issue.",
+        "fr": "Écrit ce que sait l’intégration dans ses journaux (jamais la clé), pour un ticket.",
+        "de": "Schreibt, was die Integration weiß, in ihre Logs (nie den Schlüssel), für ein Ticket.",
+        "es": "Escribe lo que sabe la integración en sus registros (nunca la clave), para una incidencia."
+      }
+    }
+  ],
+  "widgets": [
+    {
+      "key": "overview",
+      "label": {
+        "en": "Internet exposure",
+        "fr": "Exposition Internet",
+        "de": "Internet-Exposition",
+        "es": "Exposición en Internet"
+      },
+      "description": {
+        "en": "Every watched address: open ports, vulnerabilities and tags, the worst first.",
+        "fr": "Toutes les adresses surveillées : ports ouverts, vulnérabilités et étiquettes, les pires d’abord.",
+        "de": "Alle überwachten Adressen: offene Ports, Schwachstellen und Tags, die schlimmsten zuerst.",
+        "es": "Todas las direcciones vigiladas: puertos abiertos, vulnerabilidades y etiquetas, las peores primero."
+      },
+      "icon": "shield"
+    },
+    {
+      "key": "target",
+      "label": {
+        "en": "Shodan address",
+        "fr": "Adresse Shodan",
+        "de": "Shodan-Adresse",
+        "es": "Dirección Shodan"
+      },
+      "description": {
+        "en": "One address: its services, CVE with scores, tags, a button to read it again.",
+        "fr": "Une adresse : ses services, les CVE et leurs scores, les étiquettes, un bouton pour relire.",
+        "de": "Eine Adresse: Dienste, CVE mit Werten, Tags, ein Knopf zum neu Lesen.",
+        "es": "Una dirección: sus servicios, las CVE con puntuación, etiquetas, un botón para releer."
+      },
+      "icon": "server",
+      "settings": [
+        {
+          "key": "target",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Address",
+            "fr": "Adresse",
+            "de": "Adresse",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "A Shodan device. Leave empty for the public address (or the first one).",
+            "fr": "Un appareil Shodan. Laissez vide pour l’adresse publique (ou la première).",
+            "de": "Ein Shodan-Gerät. Leer lassen für die öffentliche Adresse (oder die erste).",
+            "es": "Un dispositivo Shodan. Déjelo vacío para la dirección pública (o la primera)."
+          }
+        }
+      ]
+    },
+    {
+      "key": "account",
+      "label": {
+        "en": "Shodan account",
+        "fr": "Compte Shodan",
+        "de": "Shodan-Konto",
+        "es": "Cuenta Shodan"
+      },
+      "description": {
+        "en": "The plan and the credits of the API key, the scans asked.",
+        "fr": "L’offre et les crédits de la clé API, les scans demandés.",
+        "de": "Tarif und Credits des API-Schlüssels, angeforderte Scans.",
+        "es": "El plan y los créditos de la clave API, los escaneos pedidos."
+      },
+      "icon": "key"
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "port_opened",
+      "label": {
+        "en": "Shodan: port opened",
+        "fr": "Shodan : port ouvert",
+        "de": "Shodan: Port geöffnet",
+        "es": "Shodan: puerto abierto"
+      },
+      "description": {
+        "en": "Shodan sees a port it did not see before on a watched address.",
+        "fr": "Shodan voit sur une adresse surveillée un port qu’il ne voyait pas avant.",
+        "de": "Shodan sieht an einer überwachten Adresse einen Port, den es vorher nicht sah.",
+        "es": "Shodan ve en una dirección vigilada un puerto que antes no veía."
+      },
+      "fields": [
+        {
+          "key": "target",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Address",
+            "fr": "Adresse",
+            "de": "Adresse",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "A Shodan device. Leave empty for any address.",
+            "fr": "Un appareil Shodan. Laissez vide pour n’importe quelle adresse.",
+            "de": "Ein Shodan-Gerät. Leer lassen für jede Adresse.",
+            "es": "Un dispositivo Shodan. Déjelo vacío para cualquier dirección."
+          }
+        },
+        {
+          "key": "port",
+          "type": "number",
+          "required": false,
+          "min": 1,
+          "max": 65535,
+          "label": {
+            "en": "Port",
+            "fr": "Port",
+            "de": "Port",
+            "es": "Puerto"
+          },
+          "description": {
+            "en": "Leave empty for any port.",
+            "fr": "Laissez vide pour n’importe quel port.",
+            "de": "Leer lassen für jeden Port.",
+            "es": "Déjelo vacío para cualquier puerto."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "target",
+          "type": "string",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          }
+        },
+        {
+          "key": "target_name",
+          "type": "string",
+          "label": {
+            "en": "Address name",
+            "fr": "Nom de l’adresse",
+            "de": "Name der Adresse",
+            "es": "Nombre de la dirección"
+          }
+        },
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "IP address",
+            "fr": "Adresse IP",
+            "de": "IP-Adresse",
+            "es": "Dirección IP"
+          }
+        },
+        {
+          "key": "ports",
+          "type": "string",
+          "label": {
+            "en": "Open ports now",
+            "fr": "Ports ouverts maintenant",
+            "de": "Jetzt offene Ports",
+            "es": "Puertos abiertos ahora"
+          }
+        },
+        {
+          "key": "port",
+          "type": "number",
+          "label": {
+            "en": "Port",
+            "fr": "Port",
+            "de": "Port",
+            "es": "Puerto"
+          }
+        },
+        {
+          "key": "transport",
+          "type": "string",
+          "label": {
+            "en": "Transport (tcp, udp; with a key)",
+            "fr": "Transport (tcp, udp ; avec une clé)",
+            "de": "Transport (tcp, udp; mit Schlüssel)",
+            "es": "Transporte (tcp, udp; con clave)"
+          }
+        },
+        {
+          "key": "product",
+          "type": "string",
+          "label": {
+            "en": "Software and version (with a key)",
+            "fr": "Logiciel et version (avec une clé)",
+            "de": "Software und Version (mit Schlüssel)",
+            "es": "Software y versión (con clave)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "port_closed",
+      "label": {
+        "en": "Shodan: port closed",
+        "fr": "Shodan : port fermé",
+        "de": "Shodan: Port geschlossen",
+        "es": "Shodan: puerto cerrado"
+      },
+      "description": {
+        "en": "A port Shodan saw on a watched address is gone.",
+        "fr": "Un port que Shodan voyait sur une adresse surveillée a disparu.",
+        "de": "Ein Port, den Shodan an einer überwachten Adresse sah, ist weg.",
+        "es": "Un puerto que Shodan veía en una dirección vigilada ha desaparecido."
+      },
+      "fields": [
+        {
+          "key": "target",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Address",
+            "fr": "Adresse",
+            "de": "Adresse",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "A Shodan device. Leave empty for any address.",
+            "fr": "Un appareil Shodan. Laissez vide pour n’importe quelle adresse.",
+            "de": "Ein Shodan-Gerät. Leer lassen für jede Adresse.",
+            "es": "Un dispositivo Shodan. Déjelo vacío para cualquier dirección."
+          }
+        },
+        {
+          "key": "port",
+          "type": "number",
+          "required": false,
+          "min": 1,
+          "max": 65535,
+          "label": {
+            "en": "Port",
+            "fr": "Port",
+            "de": "Port",
+            "es": "Puerto"
+          },
+          "description": {
+            "en": "Leave empty for any port.",
+            "fr": "Laissez vide pour n’importe quel port.",
+            "de": "Leer lassen für jeden Port.",
+            "es": "Déjelo vacío para cualquier puerto."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "target",
+          "type": "string",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          }
+        },
+        {
+          "key": "target_name",
+          "type": "string",
+          "label": {
+            "en": "Address name",
+            "fr": "Nom de l’adresse",
+            "de": "Name der Adresse",
+            "es": "Nombre de la dirección"
+          }
+        },
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "IP address",
+            "fr": "Adresse IP",
+            "de": "IP-Adresse",
+            "es": "Dirección IP"
+          }
+        },
+        {
+          "key": "ports",
+          "type": "string",
+          "label": {
+            "en": "Open ports now",
+            "fr": "Ports ouverts maintenant",
+            "de": "Jetzt offene Ports",
+            "es": "Puertos abiertos ahora"
+          }
+        },
+        {
+          "key": "port",
+          "type": "number",
+          "label": {
+            "en": "Port",
+            "fr": "Port",
+            "de": "Port",
+            "es": "Puerto"
+          }
+        }
+      ]
+    },
+    {
+      "key": "vulnerability_found",
+      "label": {
+        "en": "Shodan: vulnerability found",
+        "fr": "Shodan : vulnérabilité trouvée",
+        "de": "Shodan: Schwachstelle gefunden",
+        "es": "Shodan: vulnerabilidad encontrada"
+      },
+      "description": {
+        "en": "Shodan matches a new CVE to the software it sees on a watched address.",
+        "fr": "Shodan associe une nouvelle CVE aux logiciels vus sur une adresse surveillée.",
+        "de": "Shodan ordnet der Software an einer überwachten Adresse eine neue CVE zu.",
+        "es": "Shodan asocia una nueva CVE al software visto en una dirección vigilada."
+      },
+      "fields": [
+        {
+          "key": "target",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Address",
+            "fr": "Adresse",
+            "de": "Adresse",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "A Shodan device. Leave empty for any address.",
+            "fr": "Un appareil Shodan. Laissez vide pour n’importe quelle adresse.",
+            "de": "Ein Shodan-Gerät. Leer lassen für jede Adresse.",
+            "es": "Un dispositivo Shodan. Déjelo vacío para cualquier dirección."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "target",
+          "type": "string",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          }
+        },
+        {
+          "key": "target_name",
+          "type": "string",
+          "label": {
+            "en": "Address name",
+            "fr": "Nom de l’adresse",
+            "de": "Name der Adresse",
+            "es": "Nombre de la dirección"
+          }
+        },
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "IP address",
+            "fr": "Adresse IP",
+            "de": "IP-Adresse",
+            "es": "Dirección IP"
+          }
+        },
+        {
+          "key": "ports",
+          "type": "string",
+          "label": {
+            "en": "Open ports now",
+            "fr": "Ports ouverts maintenant",
+            "de": "Jetzt offene Ports",
+            "es": "Puertos abiertos ahora"
+          }
+        },
+        {
+          "key": "cve",
+          "type": "string",
+          "label": {
+            "en": "CVE id",
+            "fr": "Identifiant CVE",
+            "de": "CVE-Kennung",
+            "es": "Identificador CVE"
+          }
+        },
+        {
+          "key": "cvss",
+          "type": "number",
+          "label": {
+            "en": "CVSS score (with a key)",
+            "fr": "Score CVSS (avec une clé)",
+            "de": "CVSS-Wert (mit Schlüssel)",
+            "es": "Puntuación CVSS (con clave)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Description (with a key)",
+            "fr": "Description (avec une clé)",
+            "de": "Beschreibung (mit Schlüssel)",
+            "es": "Descripción (con clave)"
+          }
+        },
+        {
+          "key": "url",
+          "type": "string",
+          "label": {
+            "en": "Page of the CVE (NVD)",
+            "fr": "Page de la CVE (NVD)",
+            "de": "Seite der CVE (NVD)",
+            "es": "Página de la CVE (NVD)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "vulnerability_gone",
+      "label": {
+        "en": "Shodan: vulnerability gone",
+        "fr": "Shodan : vulnérabilité disparue",
+        "de": "Shodan: Schwachstelle verschwunden",
+        "es": "Shodan: vulnerabilidad desaparecida"
+      },
+      "description": {
+        "en": "A CVE is no longer matched (the software was updated or closed).",
+        "fr": "Une CVE n’est plus associée (logiciel mis à jour ou fermé).",
+        "de": "Eine CVE wird nicht mehr zugeordnet (Software aktualisiert oder geschlossen).",
+        "es": "Una CVE ya no está asociada (software actualizado o cerrado)."
+      },
+      "fields": [
+        {
+          "key": "target",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Address",
+            "fr": "Adresse",
+            "de": "Adresse",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "A Shodan device. Leave empty for any address.",
+            "fr": "Un appareil Shodan. Laissez vide pour n’importe quelle adresse.",
+            "de": "Ein Shodan-Gerät. Leer lassen für jede Adresse.",
+            "es": "Un dispositivo Shodan. Déjelo vacío para cualquier dirección."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "target",
+          "type": "string",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          }
+        },
+        {
+          "key": "target_name",
+          "type": "string",
+          "label": {
+            "en": "Address name",
+            "fr": "Nom de l’adresse",
+            "de": "Name der Adresse",
+            "es": "Nombre de la dirección"
+          }
+        },
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "IP address",
+            "fr": "Adresse IP",
+            "de": "IP-Adresse",
+            "es": "Dirección IP"
+          }
+        },
+        {
+          "key": "ports",
+          "type": "string",
+          "label": {
+            "en": "Open ports now",
+            "fr": "Ports ouverts maintenant",
+            "de": "Jetzt offene Ports",
+            "es": "Puertos abiertos ahora"
+          }
+        },
+        {
+          "key": "cve",
+          "type": "string",
+          "label": {
+            "en": "CVE id",
+            "fr": "Identifiant CVE",
+            "de": "CVE-Kennung",
+            "es": "Identificador CVE"
+          }
+        },
+        {
+          "key": "url",
+          "type": "string",
+          "label": {
+            "en": "Page of the CVE (NVD)",
+            "fr": "Page de la CVE (NVD)",
+            "de": "Seite der CVE (NVD)",
+            "es": "Página de la CVE (NVD)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "tag_added",
+      "label": {
+        "en": "Shodan: tag added",
+        "fr": "Shodan : nouvelle étiquette",
+        "de": "Shodan: neuer Tag",
+        "es": "Shodan: nueva etiqueta"
+      },
+      "description": {
+        "en": "Shodan tags a watched address (compromised, malware, self-signed…).",
+        "fr": "Shodan étiquette une adresse surveillée (compromise, malveillant, auto-signé…).",
+        "de": "Shodan markiert eine überwachte Adresse (kompromittiert, Schadsoftware, selbstsigniert…).",
+        "es": "Shodan etiqueta una dirección vigilada (comprometida, malware, autofirmado…)."
+      },
+      "fields": [
+        {
+          "key": "target",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Address",
+            "fr": "Adresse",
+            "de": "Adresse",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "A Shodan device. Leave empty for any address.",
+            "fr": "Un appareil Shodan. Laissez vide pour n’importe quelle adresse.",
+            "de": "Ein Shodan-Gerät. Leer lassen für jede Adresse.",
+            "es": "Un dispositivo Shodan. Déjelo vacío para cualquier dirección."
+          }
+        },
+        {
+          "key": "tag",
+          "type": "multi_select",
+          "required": false,
+          "label": {
+            "en": "Tags",
+            "fr": "Étiquettes",
+            "de": "Tags",
+            "es": "Etiquetas"
+          },
+          "description": {
+            "en": "Leave empty for any tag.",
+            "fr": "Laissez vide pour n’importe quelle étiquette.",
+            "de": "Leer lassen für jeden Tag.",
+            "es": "Déjelo vacío para cualquier etiqueta."
+          },
+          "options": [
+            {
+              "value": "compromised",
+              "label": {
+                "en": "Compromised",
+                "fr": "Compromise",
+                "de": "Kompromittiert",
+                "es": "Comprometida"
+              }
+            },
+            {
+              "value": "malware",
+              "label": {
+                "en": "Malware",
+                "fr": "Logiciel malveillant",
+                "de": "Schadsoftware",
+                "es": "Malware"
+              }
+            },
+            {
+              "value": "honeypot",
+              "label": {
+                "en": "Honeypot",
+                "fr": "Pot de miel (honeypot)",
+                "de": "Honeypot",
+                "es": "Honeypot"
+              }
+            },
+            {
+              "value": "doublepulsar",
+              "label": {
+                "en": "DoublePulsar backdoor",
+                "fr": "Porte dérobée DoublePulsar",
+                "de": "DoublePulsar-Hintertür",
+                "es": "Puerta trasera DoublePulsar"
+              }
+            },
+            {
+              "value": "eol-product",
+              "label": {
+                "en": "Software past end of life",
+                "fr": "Logiciel en fin de vie",
+                "de": "Software ohne Support",
+                "es": "Software sin soporte"
+              }
+            },
+            {
+              "value": "eol-os",
+              "label": {
+                "en": "System past end of life",
+                "fr": "Système en fin de vie",
+                "de": "System ohne Support",
+                "es": "Sistema sin soporte"
+              }
+            },
+            {
+              "value": "self-signed",
+              "label": {
+                "en": "Self-signed certificate",
+                "fr": "Certificat auto-signé",
+                "de": "Selbstsigniertes Zertifikat",
+                "es": "Certificado autofirmado"
+              }
+            },
+            {
+              "value": "starttls",
+              "label": {
+                "en": "STARTTLS",
+                "fr": "STARTTLS",
+                "de": "STARTTLS",
+                "es": "STARTTLS"
+              }
+            },
+            {
+              "value": "database",
+              "label": {
+                "en": "Database",
+                "fr": "Base de données",
+                "de": "Datenbank",
+                "es": "Base de datos"
+              }
+            },
+            {
+              "value": "devops",
+              "label": {
+                "en": "DevOps tool",
+                "fr": "Outil DevOps",
+                "de": "DevOps-Werkzeug",
+                "es": "Herramienta DevOps"
+              }
+            },
+            {
+              "value": "iot",
+              "label": {
+                "en": "Connected object (IoT)",
+                "fr": "Objet connecté (IoT)",
+                "de": "Vernetztes Gerät (IoT)",
+                "es": "Objeto conectado (IoT)"
+              }
+            },
+            {
+              "value": "ics",
+              "label": {
+                "en": "Industrial control (ICS)",
+                "fr": "Contrôle industriel (ICS)",
+                "de": "Industriesteuerung (ICS)",
+                "es": "Control industrial (ICS)"
+              }
+            },
+            {
+              "value": "medical",
+              "label": {
+                "en": "Medical device",
+                "fr": "Appareil médical",
+                "de": "Medizingerät",
+                "es": "Dispositivo médico"
+              }
+            },
+            {
+              "value": "videogame",
+              "label": {
+                "en": "Game server",
+                "fr": "Serveur de jeu",
+                "de": "Spieleserver",
+                "es": "Servidor de juegos"
+              }
+            },
+            {
+              "value": "vpn",
+              "label": {
+                "en": "VPN",
+                "fr": "VPN",
+                "de": "VPN",
+                "es": "VPN"
+              }
+            },
+            {
+              "value": "proxy",
+              "label": {
+                "en": "Proxy",
+                "fr": "Proxy",
+                "de": "Proxy",
+                "es": "Proxy"
+              }
+            },
+            {
+              "value": "tor",
+              "label": {
+                "en": "Tor",
+                "fr": "Tor",
+                "de": "Tor",
+                "es": "Tor"
+              }
+            },
+            {
+              "value": "cdn",
+              "label": {
+                "en": "CDN",
+                "fr": "CDN",
+                "de": "CDN",
+                "es": "CDN"
+              }
+            },
+            {
+              "value": "cloud",
+              "label": {
+                "en": "Cloud hosting",
+                "fr": "Hébergement cloud",
+                "de": "Cloud-Hosting",
+                "es": "Alojamiento en la nube"
+              }
+            },
+            {
+              "value": "scanner",
+              "label": {
+                "en": "Scanner",
+                "fr": "Scanner",
+                "de": "Scanner",
+                "es": "Escáner"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "target",
+          "type": "string",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          }
+        },
+        {
+          "key": "target_name",
+          "type": "string",
+          "label": {
+            "en": "Address name",
+            "fr": "Nom de l’adresse",
+            "de": "Name der Adresse",
+            "es": "Nombre de la dirección"
+          }
+        },
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "IP address",
+            "fr": "Adresse IP",
+            "de": "IP-Adresse",
+            "es": "Dirección IP"
+          }
+        },
+        {
+          "key": "ports",
+          "type": "string",
+          "label": {
+            "en": "Open ports now",
+            "fr": "Ports ouverts maintenant",
+            "de": "Jetzt offene Ports",
+            "es": "Puertos abiertos ahora"
+          }
+        },
+        {
+          "key": "tag",
+          "type": "string",
+          "label": {
+            "en": "Tag",
+            "fr": "Étiquette",
+            "de": "Tag",
+            "es": "Etiqueta"
+          }
+        }
+      ]
+    },
+    {
+      "key": "public_ip_changed",
+      "label": {
+        "en": "Shodan: public IP changed",
+        "fr": "Shodan : IP publique changée",
+        "de": "Shodan: öffentliche IP geändert",
+        "es": "Shodan: IP pública cambiada"
+      },
+      "description": {
+        "en": "The public address of the home changed (checked every 15 minutes).",
+        "fr": "L’adresse publique de la maison a changé (vérifiée toutes les 15 minutes).",
+        "de": "Die öffentliche Adresse des Zuhauses hat sich geändert (alle 15 Minuten geprüft).",
+        "es": "La dirección pública de la casa ha cambiado (comprobada cada 15 minutos)."
+      },
+      "variables": [
+        {
+          "key": "previous_ip",
+          "type": "string",
+          "label": {
+            "en": "Previous IP address",
+            "fr": "Adresse IP précédente",
+            "de": "Vorherige IP-Adresse",
+            "es": "Dirección IP anterior"
+          }
+        },
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "New IP address",
+            "fr": "Nouvelle adresse IP",
+            "de": "Neue IP-Adresse",
+            "es": "Nueva dirección IP"
+          }
+        }
+      ]
+    },
+    {
+      "key": "access_refused",
+      "label": {
+        "en": "Shodan: API key refused",
+        "fr": "Shodan : clé API refusée",
+        "de": "Shodan: API-Schlüssel abgelehnt",
+        "es": "Shodan: clave API rechazada"
+      },
+      "description": {
+        "en": "Shodan refuses the API key; InternetDB answers meanwhile.",
+        "fr": "Shodan refuse la clé API ; InternetDB répond en attendant.",
+        "de": "Shodan lehnt den API-Schlüssel ab; InternetDB antwortet solange.",
+        "es": "Shodan rechaza la clave API; InternetDB responde mientras tanto."
+      },
+      "variables": [
+        {
+          "key": "reason",
+          "type": "string",
+          "label": {
+            "en": "Reason (refused)",
+            "fr": "Raison (refused)",
+            "de": "Grund (refused)",
+            "es": "Motivo (refused)"
+          }
+        },
+        {
+          "key": "message",
+          "type": "string",
+          "label": {
+            "en": "Message",
+            "fr": "Message",
+            "de": "Nachricht",
+            "es": "Mensaje"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_target",
+      "timeout_seconds": 10,
+      "label": {
+        "en": "Shodan: values of an address",
+        "fr": "Shodan : valeurs d’une adresse",
+        "de": "Shodan: Werte einer Adresse",
+        "es": "Shodan: valores de una dirección"
+      },
+      "description": {
+        "en": "The last reading of a watched address (no request): for a message or a condition.",
+        "fr": "La dernière lecture d’une adresse surveillée (sans requête) : pour un message ou une condition.",
+        "de": "Die letzte Abfrage einer überwachten Adresse (ohne Anfrage): für eine Nachricht oder Bedingung.",
+        "es": "La última lectura de una dirección vigilada (sin petición): para un mensaje o una condición."
+      },
+      "fields": [
+        {
+          "key": "target",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Address",
+            "fr": "Adresse",
+            "de": "Adresse",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "A Shodan device. Leave empty for the public address (or the first one).",
+            "fr": "Un appareil Shodan. Laissez vide pour l’adresse publique (ou la première).",
+            "de": "Ein Shodan-Gerät. Leer lassen für die öffentliche Adresse (oder die erste).",
+            "es": "Un dispositivo Shodan. Déjelo vacío para la dirección pública (o la primera)."
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "target_name",
+          "type": "string",
+          "label": {
+            "en": "Address name",
+            "fr": "Nom de l’adresse",
+            "de": "Name der Adresse",
+            "es": "Nombre de la dirección"
+          }
+        },
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "IP address",
+            "fr": "Adresse IP",
+            "de": "IP-Adresse",
+            "es": "Dirección IP"
+          }
+        },
+        {
+          "key": "port_count",
+          "type": "number",
+          "label": {
+            "en": "Open ports (count)",
+            "fr": "Ports ouverts (nombre)",
+            "de": "Offene Ports (Anzahl)",
+            "es": "Puertos abiertos (número)"
+          }
+        },
+        {
+          "key": "ports",
+          "type": "string",
+          "label": {
+            "en": "Open ports",
+            "fr": "Ports ouverts",
+            "de": "Offene Ports",
+            "es": "Puertos abiertos"
+          }
+        },
+        {
+          "key": "vuln_count",
+          "type": "number",
+          "label": {
+            "en": "Vulnerabilities (count)",
+            "fr": "Vulnérabilités (nombre)",
+            "de": "Schwachstellen (Anzahl)",
+            "es": "Vulnerabilidades (número)"
+          }
+        },
+        {
+          "key": "vulns",
+          "type": "string",
+          "label": {
+            "en": "Vulnerabilities (CVE)",
+            "fr": "Vulnérabilités (CVE)",
+            "de": "Schwachstellen (CVE)",
+            "es": "Vulnerabilidades (CVE)"
+          }
+        },
+        {
+          "key": "max_cvss",
+          "type": "number",
+          "label": {
+            "en": "Highest CVSS (with a key)",
+            "fr": "CVSS maximal (avec une clé)",
+            "de": "Höchster CVSS (mit Schlüssel)",
+            "es": "CVSS máximo (con clave)"
+          }
+        },
+        {
+          "key": "tags",
+          "type": "string",
+          "label": {
+            "en": "Shodan tags",
+            "fr": "Étiquettes Shodan",
+            "de": "Shodan-Tags",
+            "es": "Etiquetas Shodan"
+          }
+        },
+        {
+          "key": "hostnames",
+          "type": "string",
+          "label": {
+            "en": "Host names",
+            "fr": "Noms d’hôte",
+            "de": "Hostnamen",
+            "es": "Nombres de host"
+          }
+        },
+        {
+          "key": "source",
+          "type": "string",
+          "label": {
+            "en": "Source (internetdb, api)",
+            "fr": "Source (internetdb, api)",
+            "de": "Quelle (internetdb, api)",
+            "es": "Fuente (internetdb, api)"
+          }
+        },
+        {
+          "key": "last_scan",
+          "type": "string",
+          "label": {
+            "en": "Last seen by Shodan (ISO 8601, with a key)",
+            "fr": "Vue par Shodan (ISO 8601, avec une clé)",
+            "de": "Von Shodan gesehen (ISO 8601, mit Schlüssel)",
+            "es": "Vista por Shodan (ISO 8601, con clave)"
+          }
+        },
+        {
+          "key": "read_at",
+          "type": "string",
+          "label": {
+            "en": "Read at (ISO 8601)",
+            "fr": "Lue à (ISO 8601)",
+            "de": "Gelesen um (ISO 8601)",
+            "es": "Leída a las (ISO 8601)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          }
+        }
+      ]
+    },
+    {
+      "key": "lookup_address",
+      "timeout_seconds": 30,
+      "label": {
+        "en": "Shodan: look up an address",
+        "fr": "Shodan : consulter une adresse",
+        "de": "Shodan: Adresse nachschlagen",
+        "es": "Shodan: consultar una dirección"
+      },
+      "description": {
+        "en": "What Shodan knows of any public IP address or host name, read now.",
+        "fr": "Ce que Shodan sait d’une adresse IP publique ou d’un nom d’hôte, lu maintenant.",
+        "de": "Was Shodan über eine öffentliche IP-Adresse oder einen Hostnamen weiß, jetzt gelesen.",
+        "es": "Lo que Shodan sabe de una dirección IP pública o un nombre de host, leído ahora."
+      },
+      "fields": [
+        {
+          "key": "address",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "IP address or host name",
+            "fr": "Adresse IP ou nom d’hôte",
+            "de": "IP-Adresse oder Hostname",
+            "es": "Dirección IP o nombre de host"
+          },
+          "placeholder": {
+            "en": "203.0.113.7 or home.example.org",
+            "fr": "203.0.113.7 ou maison.example.org",
+            "de": "203.0.113.7 oder zuhause.example.org",
+            "es": "203.0.113.7 o casa.example.org"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "IP address",
+            "fr": "Adresse IP",
+            "de": "IP-Adresse",
+            "es": "Dirección IP"
+          }
+        },
+        {
+          "key": "found",
+          "type": "boolean",
+          "label": {
+            "en": "Known to Shodan",
+            "fr": "Connue de Shodan",
+            "de": "Shodan bekannt",
+            "es": "Conocida por Shodan"
+          }
+        },
+        {
+          "key": "port_count",
+          "type": "number",
+          "label": {
+            "en": "Open ports (count)",
+            "fr": "Ports ouverts (nombre)",
+            "de": "Offene Ports (Anzahl)",
+            "es": "Puertos abiertos (número)"
+          }
+        },
+        {
+          "key": "ports",
+          "type": "string",
+          "label": {
+            "en": "Open ports",
+            "fr": "Ports ouverts",
+            "de": "Offene Ports",
+            "es": "Puertos abiertos"
+          }
+        },
+        {
+          "key": "vuln_count",
+          "type": "number",
+          "label": {
+            "en": "Vulnerabilities (count)",
+            "fr": "Vulnérabilités (nombre)",
+            "de": "Schwachstellen (Anzahl)",
+            "es": "Vulnerabilidades (número)"
+          }
+        },
+        {
+          "key": "vulns",
+          "type": "string",
+          "label": {
+            "en": "Vulnerabilities (CVE)",
+            "fr": "Vulnérabilités (CVE)",
+            "de": "Schwachstellen (CVE)",
+            "es": "Vulnerabilidades (CVE)"
+          }
+        },
+        {
+          "key": "max_cvss",
+          "type": "number",
+          "label": {
+            "en": "Highest CVSS (with a key)",
+            "fr": "CVSS maximal (avec une clé)",
+            "de": "Höchster CVSS (mit Schlüssel)",
+            "es": "CVSS máximo (con clave)"
+          }
+        },
+        {
+          "key": "tags",
+          "type": "string",
+          "label": {
+            "en": "Shodan tags",
+            "fr": "Étiquettes Shodan",
+            "de": "Shodan-Tags",
+            "es": "Etiquetas Shodan"
+          }
+        },
+        {
+          "key": "hostnames",
+          "type": "string",
+          "label": {
+            "en": "Host names",
+            "fr": "Noms d’hôte",
+            "de": "Hostnamen",
+            "es": "Nombres de host"
+          }
+        },
+        {
+          "key": "source",
+          "type": "string",
+          "label": {
+            "en": "Source (internetdb, api)",
+            "fr": "Source (internetdb, api)",
+            "de": "Quelle (internetdb, api)",
+            "es": "Fuente (internetdb, api)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          }
+        }
+      ]
+    },
+    {
+      "key": "request_scan",
+      "timeout_seconds": 30,
+      "label": {
+        "en": "Shodan: scan an address",
+        "fr": "Shodan : scanner une adresse",
+        "de": "Shodan: Adresse scannen",
+        "es": "Shodan: escanear una dirección"
+      },
+      "description": {
+        "en": "Asks Shodan to scan a watched address now (API key, 1 scan credit of a paid plan).",
+        "fr": "Demande à Shodan de scanner maintenant une adresse surveillée (clé API, 1 crédit de scan d’une offre payante).",
+        "de": "Bittet Shodan, eine überwachte Adresse jetzt zu scannen (API-Schlüssel, 1 Scan-Credit eines Bezahltarifs).",
+        "es": "Pide a Shodan que escanee ahora una dirección vigilada (clave API, 1 crédito de escaneo de un plan de pago)."
+      },
+      "fields": [
+        {
+          "key": "target",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Address",
+            "fr": "Adresse",
+            "de": "Adresse",
+            "es": "Dirección"
+          },
+          "description": {
+            "en": "A Shodan device. Leave empty for the public address (or the first one).",
+            "fr": "Un appareil Shodan. Laissez vide pour l’adresse publique (ou la première).",
+            "de": "Ein Shodan-Gerät. Leer lassen für die öffentliche Adresse (oder die erste).",
+            "es": "Un dispositivo Shodan. Déjelo vacío para la dirección pública (o la primera)."
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "scan_id",
+          "type": "string",
+          "label": {
+            "en": "Scan id",
+            "fr": "Identifiant du scan",
+            "de": "Scan-Kennung",
+            "es": "Identificador del escaneo"
+          }
+        },
+        {
+          "key": "ip",
+          "type": "string",
+          "label": {
+            "en": "IP address",
+            "fr": "Adresse IP",
+            "de": "IP-Adresse",
+            "es": "Dirección IP"
+          }
+        },
+        {
+          "key": "credits_left",
+          "type": "number",
+          "label": {
+            "en": "Scan credits left",
+            "fr": "Crédits de scan restants",
+            "de": "Verbleibende Scan-Credits",
+            "es": "Créditos de escaneo restantes"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,612 @@
+{
+  "devices": {
+    "public": {
+      "external_id": "ext:test-integration:target:public",
+      "should_poll": false,
+      "params": ["SHODAN_TARGET"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:target:public:open_ports",
+          "category": "counter-sensor",
+          "type": "integer",
+          "unit": null,
+          "min": 0,
+          "max": 65535,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:public:vulnerabilities",
+          "category": "counter-sensor",
+          "type": "integer",
+          "unit": null,
+          "min": 0,
+          "max": 10000,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:public:ip",
+          "category": "text",
+          "type": "text",
+          "unit": null,
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:public:ports",
+          "category": "text",
+          "type": "text",
+          "unit": null,
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    },
+    "host": {
+      "external_id": "ext:test-integration:target:home-example-org",
+      "should_poll": false,
+      "params": ["SHODAN_TARGET"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:target:home-example-org:open_ports",
+          "category": "counter-sensor",
+          "type": "integer",
+          "unit": null,
+          "min": 0,
+          "max": 65535,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:home-example-org:vulnerabilities",
+          "category": "counter-sensor",
+          "type": "integer",
+          "unit": null,
+          "min": 0,
+          "max": 10000,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:home-example-org:ip",
+          "category": "text",
+          "type": "text",
+          "unit": null,
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:home-example-org:ports",
+          "category": "text",
+          "type": "text",
+          "unit": null,
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    },
+    "ipv4": {
+      "external_id": "ext:test-integration:target:198-51-100-20",
+      "should_poll": false,
+      "params": ["SHODAN_TARGET"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:target:198-51-100-20:open_ports",
+          "category": "counter-sensor",
+          "type": "integer",
+          "unit": null,
+          "min": 0,
+          "max": 65535,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:198-51-100-20:vulnerabilities",
+          "category": "counter-sensor",
+          "type": "integer",
+          "unit": null,
+          "min": 0,
+          "max": 10000,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:198-51-100-20:ip",
+          "category": "text",
+          "type": "text",
+          "unit": null,
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:198-51-100-20:ports",
+          "category": "text",
+          "type": "text",
+          "unit": null,
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    },
+    "ipv6": {
+      "external_id": "ext:test-integration:target:2a01-e0a-1-2--3",
+      "should_poll": false,
+      "params": ["SHODAN_TARGET"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:target:2a01-e0a-1-2--3:open_ports",
+          "category": "counter-sensor",
+          "type": "integer",
+          "unit": null,
+          "min": 0,
+          "max": 65535,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:2a01-e0a-1-2--3:vulnerabilities",
+          "category": "counter-sensor",
+          "type": "integer",
+          "unit": null,
+          "min": 0,
+          "max": 10000,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:2a01-e0a-1-2--3:ip",
+          "category": "text",
+          "type": "text",
+          "unit": null,
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:target:2a01-e0a-1-2--3:ports",
+          "category": "text",
+          "type": "text",
+          "unit": null,
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    }
+  },
+  "manifest": {
+    "config_schema": [
+      {
+        "key": "intro",
+        "type": "section"
+      },
+      {
+        "key": "monitor_public_ip",
+        "type": "boolean"
+      },
+      {
+        "key": "addresses",
+        "type": "string"
+      },
+      {
+        "key": "key_section",
+        "type": "section"
+      },
+      {
+        "key": "api_key",
+        "type": "secret"
+      },
+      {
+        "key": "language",
+        "type": "select"
+      }
+    ],
+    "actions": ["test_connection", "diagnostic"],
+    "action_fields": {
+      "test_connection": [],
+      "diagnostic": []
+    },
+    "widgets": [
+      {
+        "key": "overview",
+        "settings": [],
+        "options": {}
+      },
+      {
+        "key": "target",
+        "settings": ["target"],
+        "options": {}
+      },
+      {
+        "key": "account",
+        "settings": [],
+        "options": {}
+      }
+    ],
+    "scene_triggers": [
+      {
+        "key": "port_opened",
+        "fields": [
+          {
+            "key": "target",
+            "options": []
+          },
+          {
+            "key": "port",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "target",
+            "type": "string"
+          },
+          {
+            "key": "target_name",
+            "type": "string"
+          },
+          {
+            "key": "ip",
+            "type": "string"
+          },
+          {
+            "key": "ports",
+            "type": "string"
+          },
+          {
+            "key": "port",
+            "type": "number"
+          },
+          {
+            "key": "transport",
+            "type": "string"
+          },
+          {
+            "key": "product",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "port_closed",
+        "fields": [
+          {
+            "key": "target",
+            "options": []
+          },
+          {
+            "key": "port",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "target",
+            "type": "string"
+          },
+          {
+            "key": "target_name",
+            "type": "string"
+          },
+          {
+            "key": "ip",
+            "type": "string"
+          },
+          {
+            "key": "ports",
+            "type": "string"
+          },
+          {
+            "key": "port",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "key": "vulnerability_found",
+        "fields": [
+          {
+            "key": "target",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "target",
+            "type": "string"
+          },
+          {
+            "key": "target_name",
+            "type": "string"
+          },
+          {
+            "key": "ip",
+            "type": "string"
+          },
+          {
+            "key": "ports",
+            "type": "string"
+          },
+          {
+            "key": "cve",
+            "type": "string"
+          },
+          {
+            "key": "cvss",
+            "type": "number"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          },
+          {
+            "key": "url",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "vulnerability_gone",
+        "fields": [
+          {
+            "key": "target",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "target",
+            "type": "string"
+          },
+          {
+            "key": "target_name",
+            "type": "string"
+          },
+          {
+            "key": "ip",
+            "type": "string"
+          },
+          {
+            "key": "ports",
+            "type": "string"
+          },
+          {
+            "key": "cve",
+            "type": "string"
+          },
+          {
+            "key": "url",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "tag_added",
+        "fields": [
+          {
+            "key": "target",
+            "options": []
+          },
+          {
+            "key": "tag",
+            "options": [
+              "compromised",
+              "malware",
+              "honeypot",
+              "doublepulsar",
+              "eol-product",
+              "eol-os",
+              "self-signed",
+              "starttls",
+              "database",
+              "devops",
+              "iot",
+              "ics",
+              "medical",
+              "videogame",
+              "vpn",
+              "proxy",
+              "tor",
+              "cdn",
+              "cloud",
+              "scanner"
+            ]
+          }
+        ],
+        "variables": [
+          {
+            "key": "target",
+            "type": "string"
+          },
+          {
+            "key": "target_name",
+            "type": "string"
+          },
+          {
+            "key": "ip",
+            "type": "string"
+          },
+          {
+            "key": "ports",
+            "type": "string"
+          },
+          {
+            "key": "tag",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "public_ip_changed",
+        "fields": [],
+        "variables": [
+          {
+            "key": "previous_ip",
+            "type": "string"
+          },
+          {
+            "key": "ip",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "access_refused",
+        "fields": [],
+        "variables": [
+          {
+            "key": "reason",
+            "type": "string"
+          },
+          {
+            "key": "message",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "scene_actions": [
+      {
+        "key": "get_target",
+        "fields": ["target"],
+        "outputs": [
+          {
+            "key": "target_name",
+            "type": "string"
+          },
+          {
+            "key": "ip",
+            "type": "string"
+          },
+          {
+            "key": "port_count",
+            "type": "number"
+          },
+          {
+            "key": "ports",
+            "type": "string"
+          },
+          {
+            "key": "vuln_count",
+            "type": "number"
+          },
+          {
+            "key": "vulns",
+            "type": "string"
+          },
+          {
+            "key": "max_cvss",
+            "type": "number"
+          },
+          {
+            "key": "tags",
+            "type": "string"
+          },
+          {
+            "key": "hostnames",
+            "type": "string"
+          },
+          {
+            "key": "source",
+            "type": "string"
+          },
+          {
+            "key": "last_scan",
+            "type": "string"
+          },
+          {
+            "key": "read_at",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "lookup_address",
+        "fields": ["address"],
+        "outputs": [
+          {
+            "key": "ip",
+            "type": "string"
+          },
+          {
+            "key": "found",
+            "type": "boolean"
+          },
+          {
+            "key": "port_count",
+            "type": "number"
+          },
+          {
+            "key": "ports",
+            "type": "string"
+          },
+          {
+            "key": "vuln_count",
+            "type": "number"
+          },
+          {
+            "key": "vulns",
+            "type": "string"
+          },
+          {
+            "key": "max_cvss",
+            "type": "number"
+          },
+          {
+            "key": "tags",
+            "type": "string"
+          },
+          {
+            "key": "hostnames",
+            "type": "string"
+          },
+          {
+            "key": "source",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "request_scan",
+        "fields": ["target"],
+        "outputs": [
+          {
+            "key": "scan_id",
+            "type": "string"
+          },
+          {
+            "key": "ip",
+            "type": "string"
+          },
+          {
+            "key": "credits_left",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

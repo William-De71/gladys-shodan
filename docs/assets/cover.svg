@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="534" viewBox="0 0 800 534">
+  <defs>
+    <radialGradient id="night" cx="0.7" cy="0.55" r="0.8">
+      <stop offset="0" stop-color="#16324a"/>
+      <stop offset="1" stop-color="#0b1622"/>
+    </radialGradient>
+    <radialGradient id="sweep" cx="0" cy="0" r="1">
+      <stop offset="0" stop-color="#3fe0a0" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#3fe0a0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="534" fill="url(#night)"/>
+  <!-- the scan: rings around the home, a sweep -->
+  <g transform="translate(560 300)">
+    <g fill="none" stroke="#3fe0a0" stroke-opacity="0.35" stroke-width="2">
+      <circle r="70"/>
+      <circle r="130"/>
+      <circle r="190"/>
+    </g>
+    <g stroke="#3fe0a0" stroke-opacity="0.25" stroke-width="1.5">
+      <line x1="-200" y1="0" x2="200" y2="0"/>
+      <line x1="0" y1="-200" x2="0" y2="200"/>
+    </g>
+    <path d="M0 0 L190 0 A190 190 0 0 0 134 -134 Z" fill="url(#sweep)" transform="rotate(-20)"/>
+    <!-- the home -->
+    <g fill="#e8f1fb">
+      <path d="M-46 6 L0 -38 L46 6 L46 52 L-46 52 Z"/>
+    </g>
+    <rect x="-12" y="22" width="24" height="30" fill="#16324a"/>
+    <path d="M-54 10 L0 -44 L54 10" fill="none" stroke="#f28c28" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+    <!-- open ports found by the scan -->
+    <g font-family="DejaVu Sans Mono, monospace" font-size="20" font-weight="bold">
+      <circle cx="118" cy="-62" r="8" fill="#3fe0a0"/>
+      <text x="132" y="-55" fill="#3fe0a0">443</text>
+      <circle cx="-120" cy="-96" r="8" fill="#f2b33d"/>
+      <text x="-178" y="-89" fill="#f2b33d">22</text>
+      <circle cx="-150" cy="96" r="8" fill="#ff6b6b"/>
+      <text x="-212" y="128" fill="#ff6b6b">CVE</text>
+    </g>
+  </g>
+  <g font-family="DejaVu Sans, Arial, sans-serif" fill="#ffffff">
+    <text x="40" y="96" font-size="64" font-weight="bold">Shodan</text>
+    <text x="42" y="142" font-size="28">for Gladys Assistant</text>
+    <text x="42" y="182" font-size="20" fill="#cfe3f5">What the Internet sees of your home</text>
+    <text x="42" y="474" font-size="18" fill="#9fb7cc">open ports · vulnerabilities · alerts</text>
+    <text x="42" y="500" font-size="14" fill="#6f879c">not affiliated with Shodan · illustration</text>
+  </g>
+</svg>

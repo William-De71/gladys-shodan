@@ -1,0 +1,79 @@
+{
+  "internetdb": {
+    "203.0.113.7": {
+      "cpes": ["cpe:/a:openbsd:openssh:8.9p1", "cpe:/a:igor_sysoev:nginx:1.18.0"],
+      "hostnames": ["home.example.org"],
+      "ip": "203.0.113.7",
+      "ports": [443, 22],
+      "tags": ["self-signed"],
+      "vulns": ["CVE-2023-38408", "CVE-2021-23017"]
+    },
+    "198.51.100.20": {
+      "cpes": [],
+      "hostnames": [],
+      "ip": "198.51.100.20",
+      "ports": [8443],
+      "tags": [],
+      "vulns": []
+    }
+  },
+  "api": {
+    "203.0.113.7": {
+      "ip": 3405803783,
+      "ip_str": "203.0.113.7",
+      "ports": [22, 443],
+      "hostnames": ["home.example.org"],
+      "domains": ["example.org"],
+      "org": "Example Telecom",
+      "isp": "Example Telecom",
+      "os": null,
+      "tags": ["self-signed"],
+      "vulns": ["CVE-2023-38408", "CVE-2021-23017"],
+      "last_update": "2026-10-26T04:12:33.481920",
+      "country_code": "FR",
+      "data": [
+        {
+          "port": 22,
+          "transport": "tcp",
+          "product": "OpenSSH",
+          "version": "8.9p1 Ubuntu-3ubuntu0.1",
+          "timestamp": "2026-10-26T04:12:33.481920",
+          "cpe23": ["cpe:2.3:a:openbsd:openssh:8.9p1"],
+          "vulns": {
+            "CVE-2023-38408": {
+              "verified": false,
+              "cvss": 9.8,
+              "summary": "The PKCS#11 feature in ssh-agent in OpenSSH before 9.3p2 has an insufficiently trustworthy search path."
+            }
+          }
+        },
+        {
+          "port": 443,
+          "transport": "tcp",
+          "product": "nginx",
+          "version": "1.18.0",
+          "timestamp": "2026-10-25T21:02:11.000000",
+          "cpe23": ["cpe:2.3:a:f5:nginx:1.18.0"],
+          "vulns": {
+            "CVE-2021-23017": {
+              "verified": false,
+              "cvss": 7.7,
+              "summary": "A security issue in nginx resolver was identified, which might allow an attacker to cause a 1-byte memory overwrite."
+            }
+          }
+        }
+      ]
+    }
+  },
+  "apiInfo": {
+    "scan_credits": 87,
+    "query_credits": 100,
+    "monitored_ips": 3,
+    "plan": "dev",
+    "https": true,
+    "unlocked": true,
+    "unlocked_left": 100,
+    "telnet": true,
+    "usage_limits": { "scan_credits": 100, "query_credits": 100, "monitored_ips": 16 }
+  }
+}

@@ -1,0 +1,12 @@
+Gladys Shodan integration
+Copyright 2026 William Deren
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+It asks Shodan what it knows of the public addresses the user watches: through
+Shodan InternetDB (https://internetdb.shodan.io, no key, free for
+non-commercial use), or through the Shodan API (https://developer.shodan.io/api)
+with the API key of the user's own Shodan account. It never scans anything
+itself. This integration is not affiliated with nor endorsed by Shodan.
+Shodan is a trademark of its owner. The endpoints and fields follow the
+published API documentation and the answers of the live services.
