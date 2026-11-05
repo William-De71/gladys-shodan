@@ -89,7 +89,7 @@ sequenceDiagram
 **Widgets**:
 
 - **Internet-Exposition**: Kacheln mit der Summe der offenen Ports und Schwachstellen, dann eine Karte pro Adresse, die bedenklichste zuerst (Alarm-Tags compromised / malware / doublepulsar, dann CVE, dann Fehler, dann offene Ports), jede mit ihren Ports, CVE, Tags und einem Link zu ihrer Seite auf shodan.io; eine Legende nennt die Quelle.
-- **Shodan-Adresse**: eine Adresse (Einstellung: ein Gerät; leer = die öffentliche Adresse): Kacheln Ports, Schwachstellen und höchster CVSS-Wert (mit Schlüssel), eine Karte pro Port / Dienst mit Produkt, Version und CVE (Werte und Beschreibungen), ein Text mit den CVE, Statuszeilen (IP, zuletzt von Shodan gesehen, gelesen, Hostnamen, Tags, Netzwerk, Quelle), eine Schaltfläche **Neu lesen** (höchstens einmal pro Minute) und eine Schaltfläche **Auf Shodan öffnen**.
+- **Shodan-Adresse**: eine Adresse (Einstellung: ein Gerät; leer = die öffentliche Adresse): Kacheln Ports und Schwachstellen, eine Karte pro Port / Dienst mit Produkt, Version und CVE (Werte und Beschreibungen), ein Text mit den CVE, Statuszeilen (IP, höchster CVSS-Wert mit Schlüssel, zuletzt von Shodan gesehen, gelesen, Hostnamen, Tags, Netzwerk, Quelle), eine Schaltfläche **Neu lesen** (höchstens einmal pro Minute) und eine Schaltfläche **Auf Shodan öffnen**.
 - **Shodan-Konto**: Abfrage-Credits, Scan-Credits und überwachte IPs gegenüber ihren Grenzen, der Tarif, die letzten Scans; ohne Schlüssel sagt es, dass ein Schlüssel nötig ist.
 
 **Auslöser** (ein Ereignis pro Übergang, nie bei der ersten Abfrage, nie als Folge einer Szenenaktion; höchstens 10 Ereignisse einer Art pro Adresse und Abfrage):

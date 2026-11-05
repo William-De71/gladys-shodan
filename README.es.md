@@ -89,7 +89,7 @@ sequenceDiagram
 **Widgets**:
 
 - **Exposición en Internet**: mosaicos con el total de puertos abiertos y vulnerabilidades, luego una tarjeta por dirección, la más preocupante primero (etiquetas de alarma compromised / malware / doublepulsar, luego CVE, luego errores, luego puertos abiertos), cada una con sus puertos, CVE, etiquetas y un enlace a su página en shodan.io; una leyenda indica la fuente.
-- **Dirección Shodan**: una dirección (ajuste: un dispositivo; vacío = la dirección pública): mosaicos puertos, vulnerabilidades y CVSS más alto (con una clave), una tarjeta por puerto / servicio con su producto, versión y CVE (puntuaciones y descripciones), un texto que lista las CVE, líneas de estado (IP, vista por Shodan, leída, nombres de host, etiquetas, red, fuente), un botón **Volver a leer** (una vez por minuto como máximo) y un botón **Ver en Shodan**.
+- **Dirección Shodan**: una dirección (ajuste: un dispositivo; vacío = la dirección pública): mosaicos puertos y vulnerabilidades, una tarjeta por puerto / servicio con su producto, versión y CVE (puntuaciones y descripciones), un texto que lista las CVE, líneas de estado (IP, CVSS más alto con una clave, vista por Shodan, leída, nombres de host, etiquetas, red, fuente), un botón **Volver a leer** (una vez por minuto como máximo) y un botón **Ver en Shodan**.
 - **Cuenta Shodan**: créditos de consulta, créditos de escaneo e IP vigiladas frente a sus límites, el plan, los últimos escaneos; sin clave indica que hace falta una clave.
 
 **Disparadores** (un evento por transición, nunca en la primera lectura, nunca como resultado de una acción de escena; como máximo 10 eventos de un mismo tipo por dirección y por lectura):

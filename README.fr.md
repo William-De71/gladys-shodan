@@ -89,7 +89,7 @@ sequenceDiagram
 **Widgets** :
 
 - **Exposition Internet** : des tuiles avec le total des ports ouverts et des vulnérabilités, puis une carte par adresse, la plus préoccupante d’abord (étiquettes d’alarme compromised / malware / doublepulsar, puis CVE, puis erreurs, puis ports ouverts), chacune avec ses ports, ses CVE, ses étiquettes et un lien vers sa page sur shodan.io ; une légende indique la source.
-- **Adresse Shodan** : une adresse (réglage : un appareil ; vide = l’adresse publique) : tuiles ports, vulnérabilités et CVSS le plus élevé (avec une clé), une carte par port / service avec son produit, sa version et ses CVE (scores et descriptions), un texte qui liste les CVE, des lignes d’état (IP, vue par Shodan, lue, noms d’hôte, étiquettes, réseau, source), un bouton **Relire** (une fois par minute au plus) et un bouton **Voir sur Shodan**.
+- **Adresse Shodan** : une adresse (réglage : un appareil ; vide = l’adresse publique) : tuiles ports et vulnérabilités, une carte par port / service avec son produit, sa version et ses CVE (scores et descriptions), un texte qui liste les CVE, des lignes d’état (IP, CVSS le plus élevé avec une clé, vue par Shodan, lue, noms d’hôte, étiquettes, réseau, source), un bouton **Relire** (une fois par minute au plus) et un bouton **Voir sur Shodan**.
 - **Compte Shodan** : crédits de requête, crédits de scan et IP surveillées face à leurs limites, l’offre, les derniers scans ; sans clé, il indique qu’une clé est nécessaire.
 
 **Déclencheurs** (un événement par transition, jamais à la première lecture, jamais à la suite d’une action de scène ; 10 événements d’un même type au plus par adresse et par lecture) :

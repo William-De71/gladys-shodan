@@ -89,7 +89,7 @@ sequenceDiagram
 **Widgets**:
 
 - **Internet exposure**: tiles with the total open ports and vulnerabilities, then one card per address, the worst first (alarm tags compromised / malware / doublepulsar, then CVE, then errors, then open ports), each with its ports, CVE, tags and a link to its page on shodan.io; a caption tells the source.
-- **Shodan address**: one address (setting: a device; empty = the public address): tiles ports, vulnerabilities and highest CVSS (with a key), one card per port / service with its product, version and CVE (scores and descriptions), a text listing the CVE, status rows (IP, last seen by Shodan, read, host names, tags, network, source), a **Read again** button (once a minute at most) and an **Open on Shodan** button.
+- **Shodan address**: one address (setting: a device; empty = the public address): tiles ports and vulnerabilities, one card per port / service with its product, version and CVE (scores and descriptions), a text listing the CVE, status rows (IP, highest CVSS with a key, last seen by Shodan, read, host names, tags, network, source), a **Read again** button (once a minute at most) and an **Open on Shodan** button.
 - **Shodan account**: query credits, scan credits and monitored IPs against their limits, the plan, the last scans; without a key it says a key is needed.
 
 **Triggers** (one event per transition, never at the first reading, never as the result of a scene action; at most 10 events of a kind per address and per reading):

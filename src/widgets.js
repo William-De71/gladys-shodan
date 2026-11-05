@@ -300,15 +300,6 @@ function buildTargetWidget({ view, language, now, timeZone }) {
       color: reading.vulns.length ? cvssColor(top) : WIDGET_COLORS.SUCCESS,
     },
   ];
-  if (Number.isFinite(top)) {
-    components.push({
-      type: 'value',
-      label: clip(t('tileCvss', language), 24),
-      value: formatNumber(top, language, 1),
-      icon: 'activity',
-      color: cvssColor(top),
-    });
-  }
   if (reading.ports.length) {
     components.push({
       type: 'card-list',
@@ -335,6 +326,16 @@ function buildTargetWidget({ view, language, now, timeZone }) {
       color: WIDGET_COLORS.NEUTRAL,
     },
   ];
+  // The highest CVSS is a status row, not a tile: with it as a third tile the
+  // card held 9 components, and the core drops what goes past 8 (the
+  // "Open on Shodan" button).
+  if (Number.isFinite(top)) {
+    rows.push({
+      label: clip(t('tileCvss', language), 40),
+      value: formatNumber(top, language, 1),
+      color: cvssColor(top),
+    });
+  }
   if (Number.isFinite(reading.lastUpdate)) {
     rows.push({
       label: clip(t('rowLastScan', language), 40),

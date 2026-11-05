@@ -239,16 +239,24 @@ test('with a key: the API (services, CVSS, last scan), the credits; never the ke
   await createAll(gladys);
   assert.equal(lastState(gladys, id('public', 'ports')).text, '22/tcp, 443/tcp');
   const content = await widget(gladys, WIDGETS.TARGET, { language: 'fr' });
-  assert.deepEqual(validateWidgetContent(content).errors ?? [], []);
+  assert.deepEqual(validateWidgetContent(content), []);
   const tiles = content.components.filter((component) => component.type === 'value');
   assert.deepEqual(
     tiles.map((tile) => [tile.label, tile.value]),
     [
       ['Ports ouverts', 2],
       ['Vulnérabilités', 2],
+    ],
+  );
+  const status = content.components.find((component) => component.type === 'status').items;
+  assert.deepEqual(
+    status.slice(0, 2).map((row) => [row.label, row.value]),
+    [
+      ['Adresse IP', '203.0.113.7'],
       ['CVSS maximal', '9,8'],
     ],
   );
+  assert.equal(content.components.at(-1).link.url.startsWith('https://www.shodan.io/'), true);
   const cards = content.components.find((component) => component.type === 'card-list').items;
   assert.deepEqual(
     cards.map((card) => [card.title, card.subtitle, card.badge?.text]),
@@ -258,7 +266,7 @@ test('with a key: the API (services, CVSS, last scan), the credits; never the ke
     ],
   );
   const account = await widget(gladys, WIDGETS.ACCOUNT, { language: 'en' });
-  assert.deepEqual(validateWidgetContent(account).errors ?? [], []);
+  assert.deepEqual(validateWidgetContent(account), []);
   assert.equal(account.components[1].value, '87/100');
   const outputs = (await gladys.fake.sceneAction(SCENE_ACTIONS.GET_TARGET, {})).data.outputs;
   assert.equal(outputs.max_cvss, 9.8);
@@ -359,7 +367,7 @@ test('widgets: every content valid in the four languages; the button reads again
   for (const language of LANGUAGES) {
     for (const key of Object.values(WIDGETS)) {
       const content = await widget(gladys, key, { language });
-      assert.deepEqual(validateWidgetContent(content).errors ?? [], [], `${key} ${language}`);
+      assert.deepEqual(validateWidgetContent(content), [], `${key} ${language}`);
     }
   }
   const overview = await widget(gladys, WIDGETS.OVERVIEW, { language: 'en' });
