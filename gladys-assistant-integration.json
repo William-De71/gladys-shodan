@@ -8,8 +8,8 @@
     "de": "Was das Internet von deinem Zuhause sieht, per Shodan: offene Ports, Schwachstellen.",
     "es": "Lo que Internet ve de su casa, por Shodan: puertos abiertos, vulnerabilidades, alertas."
   },
-  "version": "0.1.0",
-  "docker_image": "ghcr.io/william-de71/gladys-shodan:0.1.0",
+  "version": "0.1.1",
+  "docker_image": "ghcr.io/william-de71/gladys-shodan:0.1.1",
   "gladys_version": ">=5.3.0",
   "categories": ["security", "servers"],
   "keywords": [

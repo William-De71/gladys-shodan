@@ -5,6 +5,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.1.1] - 2026-11-05
+
+### Fixed
+
+- **widgets:** keep the "Open on Shodan" button when CVE are found ([bb146e5](https://github.com/William-De71/gladys-shodan/commit/bb146e5b3ad54c569ece36a17df673c18e3e7f54))
+
 ## [0.1.0] - 2026-10-28
 
 ### Added
@@ -16,4 +22,5 @@ each release from the Conventional Commits: do not edit it by hand.
 - **configuration:** public address, other addresses, optional API key, language, "Test the connection" and "Diagnostic" buttons
 - **i18n:** English, French, German and Spanish for the manifest, the runtime texts, the documentation and the README
 
+[0.1.1]: https://github.com/William-De71/gladys-shodan/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/William-De71/gladys-shodan/releases/tag/v0.1.0

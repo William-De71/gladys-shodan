@@ -1,6 +1,6 @@
 {
   "name": "gladys-shodan",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "External Gladys Assistant integration for Shodan: what the Internet sees of your home (open ports, vulnerabilities, Shodan tags) through Shodan InternetDB or the Shodan API, scene triggers and dashboard widgets. Read only.",
   "homepage": "https://github.com/William-De71/gladys-shodan",
